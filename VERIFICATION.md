@@ -1,125 +1,59 @@
 # Verification of the McDiarmid library
 
-Run `python3 scripts/verify.py` from the project root after obtaining the pinned
-mathlib cache. A release check succeeds only when `result.json` reports `pass`
-and `build_performed` is `true`. The evidence is in `.lake/verification/`.
-Development options produce `development-pass` or `inventory-only`, never a
-release pass. A failed run invalidates any earlier success marker.
+The command `python3 scripts/verify.py` builds the library and checks its declarations, hypotheses, and proof dependencies. It should be run from the project root after obtaining the mathlib cache for the version specified in `lake-manifest.json`. The results and logs are written to `.lake/verification/`.
 
-## Certificates and their scope
+A successful release check reports `status: pass` and `build_performed: true` in `result.json`. The development options report `development-pass` or `inventory-only`, which distinguish those runs from a complete release check. At the start of each run, the script replaces the previous result, so an earlier success is not reported after a failed check.
 
-| Certificate | Check and scope |
+## Verification scope
+
+| Check | Scope |
 | --- | --- |
-| Kernel | Build both library and test target with warnings treated as errors. Audit all 35 named source declarations, once through compiled imports and once through freshly elaborated source. Only `propext`, `Classical.choice`, and `Quot.sound` are allowed. |
-| Premises | Record the entire elaborated type, all 311 binders and their kinds, all 95 proposition binders, and the conclusion. Parameters such as measurable-space structures and `Fintype` are retained even though they are not propositions. |
-| Premise provenance | `verification/reviewed_statements.json` classifies each proposition binder and explains its source or consuming proof. Changes to signatures or the reviewed definition/version context require a new review. |
-| Proof regions | The source audit records actual direct proof dependencies and checks the essential library-to-library proof edges. The chain below accounts for boundedness, integrability, the coordinate induction, Hoeffding's lemma, Chernoff's bound, joint-law transport, and the two-sided union bound. |
-| Statement and composition | `OriginalStatements.lean` checks definitional equality with the seven original public theorem types and the original compatibility predicate. The mathematical comparison below states the scope of agreement with the textbook. |
+| Compilation and axioms | The library and test target are built with warnings treated as errors. The 33 named source declarations are checked through compiled imports and freshly elaborated source. The permitted axioms are `propext`, `Classical.choice`, and `Quot.sound`. |
+| Parameters and hypotheses | The inventory records the full elaborated type, its 303 binders and their kinds, the 95 proposition binders, and the conclusion. It also retains parameters such as measurable-space structures and `Fintype`. |
+| Sources of hypotheses | `verification/reviewed_statements.json` classifies each proposition binder and records its mathematical source or the proof in which it is applied. Changes to a signature or the reviewed definitions and versions require review of the affected entries. |
+| Proof dependencies | The source check records the declarations used directly in each proof and checks the required dependencies between library results. These include the boundedness and integrability lemmas, coordinate induction, Hoeffding's lemma, Chernoff's bound, equality of the joint and product laws, and the two-sided union bound. |
+| Statement preservation | `verification/OriginalStatements.lean` checks definitional equality with the six original tail-inequality theorem types. The comparison below describes their relation to the reference theorem. |
 
-The 35 declarations consist of 27 library declarations and 8 named example
-declarations. Anonymous examples are checked by the test build. The declaration
-index is tailored to the explicit declaration syntax used in these files; it is
-not a general Lean parser. A changed module set fails the audit and must be
-reviewed. Imported mathlib dependencies are trusted through Lean's kernel checks
-and transitive axiom audit; their full source trees are not independently
-re-elaborated by this command.
+The 33 declarations consist of 25 library declarations and 8 named examples. Anonymous examples are checked when the test target is built. The declaration index recognizes the explicit syntax used in these source files; changes to the module set require a corresponding review of the index and verification scope. Imported mathlib results are checked through Lean's kernel and their transitive axiom dependencies. Their source files are not separately re-elaborated by this script.
 
-The recorded provenance and textbook comparison are mathematical review evidence,
-not machine-proved equivalence to English prose. The review was performed with
-Codex; it is not human referee approval or mathlib acceptance. The automated
-checks enforce consistency with the reviewed inventory, not the correctness of
-arbitrarily edited review metadata.
+The automated checks establish consistency with the reviewed statements and hypothesis classifications. The comparison with the reference theorem also requires mathematical judgment about the meaning of the definitions and assumptions. The recorded comparison was conducted with Codex. The proof was also reviewed by Astra and Jared Huling, as acknowledged in the README. Referee review and acceptance into mathlib are separate processes.
 
-## Mathematical statement comparison
+## Relation to the reference theorem
 
-The reference is Boucheron, Lugosi and Massart (2013), *Concentration Inequalities*,
-Theorem 6.2, printed page 171.
+The reference is Boucheron, Lugosi and Massart (2013), *Concentration Inequalities*, Theorem 6.2, printed page 171. The formalization concerns finitely many independent coordinates whose probability laws may differ. The coordinates take values in a common measurable space `X`; a family of different coordinate value types is outside the present statement. The statistic `F` is measurable and satisfies a pointwise coordinate oscillation bound `c i` throughout the product space, so the hypothesis applies beyond the support of the coordinate laws as well.
 
-* There are finitely many independent coordinates. Their probability laws can
-  differ. The API uses a common measurable value space `X`; it does not yet
-  provide a dependent family of different value types.
-* `F` is measurable and has a global, pointwise coordinate oscillation bound
-  `c i`. This is not merely an almost-everywhere or on-support bound.
-* The centered MGF satisfies `E exp(l(F-EF)) ≤ exp(l² S/8)` for every real
-  `l`, where `S = Σᵢ cᵢ²`. Exponential integrability is proved, as is
-  integrability of `F`. Thus `EF` is an expectation, not the default value of a
-  nonintegrable Bochner integral.
-* The `HasSubgaussianMGF` parameter is `S/4`: mathlib writes the MGF bound as
-  `exp(parameter * l² / 2)`. Its tail bound therefore gives `exp(-2t²/S)`.
-* The public tails take `t > 0` and use closed events. These imply the book's
-  strict events; an example checks the inclusion explicitly. The two-sided
-  extension adds the two one-sided bounds.
-* Measurability is explicit in Lean. Nonnegative `c i` and nonempty `X` need
-  not be supplied separately: the probability-law and bounded-difference
-  assumptions imply the needed facts when coordinates exist. Empty products
-  are valid, including an empty value space.
-* When `S = 0`, Lean's division convention gives a displayed bound of `1`
-  (or `2` for two sides). This is valid but weak. Examples separately prove
-  that positive-threshold tails are actually zero when every `c i = 0`, and
-  for an empty product. There is no assumption `S > 0` hidden in the API.
+The centered moment generating function (MGF) satisfies `E exp(l(F-EF)) ≤ exp(l² S/8)` for each real `l`, where `S = Σᵢ cᵢ²`. The proof establishes integrability of `F` and exponential integrability, which justify these expectations. The parameter of `HasSubgaussianMGF` is `S/4` because mathlib expresses its MGF bound as `exp(parameter * l² / 2)`. Its tail inequality therefore yields `exp(-2t²/S)`.
 
-`BoundedDiff` and `McDiarmidLowerTail` are explicitly exposed definitions under
-Lean's module system. Their bodies are part of the review context. The latter
-packages the entire lower-tail statement as a proposition; its apparent absence
-of proposition binders in the declaration inventory does not remove the
-conditions quantified *inside* its definition. The frozen definition-equality
-check checks that complete body.
+The tail statements assume `t > 0` and use non-strict inequalities. They imply the strict inequalities in the reference theorem by inclusion of events, as checked in an example. The two-sided extension follows by adding the two one-sided bounds. Measurability is explicit in Lean, while the needed nonnegativity of `c i` and nonemptiness of `X` follow from the bounded-differences condition and coordinate probability laws. Empty products are permitted, including when the value space is empty.
 
-## Proof composition
+When `S = 0`, Lean's division convention gives a displayed upper bound of `1`, or `2` for the two-sided inequality. The statements remain valid in this case. Separate examples prove that the tail probability at a positive threshold is zero when each `c i = 0`, and for an empty product. Thus the public statements apply without an assumption that `S > 0`.
 
-`Induction.abs_sub_le_sum` changes one coordinate at a time.
-`exists_abs_le` then bounds `F` relative to a fixed point, and the integrability
-helpers justify each integral and use of Fubini. Nonempty spaces needed for
-these helpers are obtained from the probability laws.
+The definition `BoundedDiff` is exposed under Lean's module system and is included in the reviewed definition context. The theorem-type checks unfold this predicate, so the comparison includes the coordinatewise inequality it defines.
 
-`Induction.mgf_le_fin` splits off one coordinate. It applies its induction
-hypothesis to the remaining coordinates. It proves an oscillation bound for the
-partial expectation `g`, then applies `exists_mem_Icc_of_abs_sub_le` to put `g`
-in an interval of the required length. The endpoint is an infimum and need not
-be attained. Mathlib's `hasSubgaussianMGF_of_mem_Icc` supplies Hoeffding's lemma.
-`Induction.mgf_le` transports the result from `Fin n` to any finite index type.
+## Proof dependencies
 
-`hasSubgaussianMGF_boundedDiff_pi` packages the MGF bound and exponential
-integrability. `Induction.upper_tail_pi` actually applies this theorem and
-`HasSubgaussianMGF.measure_ge_le`; the sub-Gaussian API is part of the main
-proof. The lower tail applies the upper tail to `-F`. The public product
-statements wrap these results, and the two-sided statement applies a union bound.
+The theorem `Induction.abs_sub_le_sum` bounds the difference between two values of `F` by changing one coordinate at a time. The lemma `exists_abs_le` then establishes boundedness relative to a fixed point. The integrability lemmas justify the expectations and applications of Fubini's theorem. Where nonemptiness is needed, it follows from the probability-law assumptions.
 
-`JointLaw.map_vec_eq_pi` uses independence to identify the joint law with the
-product of the marginals. `integral_vec` and `prob_vec` transport the expectation
-and tail events. `hasSubgaussianMGF_boundedDiff` transports the sub-Gaussian
-property with `HasSubgaussianMGF.of_map`.
+The induction in `Induction.mgf_le_fin` separates the first coordinate from the remaining coordinates and applies the induction hypothesis to the latter. The partial expectation `g` satisfies the coordinate oscillation bound, so `exists_mem_Icc_of_abs_sub_le` places its values in an interval of the required length. The left endpoint is an infimum and need not be attained. Mathlib's `hasSubgaussianMGF_of_mem_Icc` supplies Hoeffding's lemma, and `Induction.mgf_le` extends the result from `Fin n` to an arbitrary finite index type.
 
-The optional `Compat.Cooverlap` module applies the public product lower tail to
-prove the existing paper adapter. It is excluded from the generic root import,
-as are examples. Downstream users of that adapter must change their import to
-`McdiarmidLean.Compat.Cooverlap`; its name and mathematical type are preserved.
-This project verifies the concentration input, not every result in the paper.
+The theorem `hasSubgaussianMGF_boundedDiff_pi` combines the MGF bound with exponential integrability. The proof of `Induction.upper_tail_pi` applies this result and `HasSubgaussianMGF.measure_ge_le`. Applying the upper-tail result to `-F` establishes the lower-tail result, and a union bound establishes the two-sided result.
 
-## Evidence and failure checks
+For independent random variables, `JointLaw.map_vec_eq_pi` identifies the joint law with the product of the marginal laws. The lemmas `integral_vec` and `prob_vec` establish the corresponding identities for expectations and event probabilities. The theorem `hasSubgaussianMGF_boundedDiff` uses `HasSubgaussianMGF.of_map` to establish the sub-Gaussian property under the original probability measure.
 
-* `commands.json` and the logs record commands, exit codes, and durations.
-* `declarations.json` contains full types, premises, allowed axioms, and direct
-  proof dependencies. Fresh and compiled signatures must agree.
-* `source_hashes.json` identifies the source, documentation, and audit tooling.
-  `dependency_revisions.json` must match the pinned manifest, and tracked
-  dependency sources must be clean.
-* `original_statements.log` checks the original theorem interfaces by Lean
-  definitional equality, including the unfolded bounded-difference predicate.
-* `root_imports.log` excludes the optional compatibility and example modules,
-  FoML, and the former bridge from the generic root import.
-* `reject_axiom.log` is an **expected failing** Lean check. The runner requires
-  the specific custom-axiom rejection, so a syntax error cannot count as a pass.
-  Python tests also check rejection of missing or duplicate records, `sorryAx`,
-  custom axioms, late errors, changed types, and unreviewed premises.
+## Verification records
 
-To inspect a deliberate interface change, use `--inventory-only` and read the
-new elaborated statements, definition context, and proof edges before manually
-updating the reviewed inventory. This mode does not approve the change.
-Do not refresh hashes merely to make the check pass.
+| File | Contents |
+| --- | --- |
+| `commands.json` and command logs | Commands, exit codes, and elapsed times. |
+| `declarations.json` | Full types, hypotheses, axioms, and direct proof dependencies. Signatures obtained from fresh source and compiled imports must agree. |
+| `source_hashes.json` | Hashes of the source files, documentation, and verification code. |
+| `dependency_revisions.json` | Dependency revisions, checked against the manifest together with the absence of modifications to tracked dependency sources. |
+| `original_statements.log` | Definitional-equality checks for the recorded theorem types. |
+| `root_imports.log` | A check that the main import excludes example modules and external proof implementations. |
+| `reject_axiom.log` | The result of a deliberate custom-axiom rejection check. |
 
-The GitHub workflow runs this same audit and retains its evidence. Local
-validation establishes no remote CI result. Before an upstream submission,
-a human contributor should review the proof, settle upstream namespaces and
-file placement with maintainers, and adapt the contribution to the then-current
-mathlib revision and contribution requirements.
+The custom-axiom check must fail with the specified rejection message; an unrelated syntax error also fails verification. The Python tests check rejection of missing or duplicate records, `sorryAx`, additional axioms, errors following a declaration record, changed theorem types, and unreviewed hypotheses.
+
+The option `--inventory-only` generates elaborated statements and dependency records for review after an intended interface change. Updating the reviewed inventory requires comparison of the statements, definitions, and proof dependencies; regenerating hashes alone does not establish that the change is correct.
+
+The GitHub Actions workflow runs the same verification command and retains the resulting records. Local and GitHub runs have separate logs and outcomes. A proposed mathlib contribution additionally requires review of the proof, agreement with maintainers about namespaces and file placement, and compatibility with the mathlib revision used for submission.

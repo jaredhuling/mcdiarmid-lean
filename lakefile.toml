@@ -22,6 +22,6 @@ rev = "v4.35.0"
 [[lean_lib]]
 name = "McdiarmidLean"
 
-# Examples and compatibility checks are built without entering the public root import.
+# Examples are compiled separately from the main library import.
 [[lean_lib]]
 name = "McdiarmidLeanTest"

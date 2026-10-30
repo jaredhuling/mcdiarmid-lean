@@ -6,9 +6,9 @@ Authors: Jared Huling
 module
 
 public import Lean
-import McdiarmidLean.Compat.Cooverlap
+import McdiarmidLean
 
-/-! # Regression checks for the original seven public theorem types
+/-! # Regression checks for the original six tail-inequality theorem types
 
 The expected elaborated types were frozen before the release refactor on 2026-10-30.
 The check requires definitional equality, not merely an implication between statements.
@@ -54,9 +54,6 @@ assert_original_type McdiarmidLean.mcdiarmid_two_sided_pi :
           (Measure.pi μ) {x | t ≤ |F x - ∫ (y : ι → X), F y ∂Measure.pi μ|} ≤
             ENNReal.ofReal (2 * rexp (-(2 * t ^ 2) / ∑ i, c i ^ 2)))
 
-assert_original_type McdiarmidLean.mcDiarmidLowerTail_holds :
-  (∀ (X : Type u_1) [_inst : MeasurableSpace X] (ι : Type u_2) [_inst_1 : Fintype ι], McdiarmidLean.McDiarmidLowerTail X ι)
-
 assert_original_type McdiarmidLean.mcdiarmid_upper_tail :
   (∀ {ι : Type u_1} [_inst : Fintype ι] {X : Type u_2} [_inst_1 : MeasurableSpace X] {Ω : Type u_3}
   [_inst_2 : MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P] (Xv : ι → Ω → X),
@@ -95,10 +92,3 @@ assert_original_type McdiarmidLean.mcdiarmid_two_sided :
               0 < t →
                 P {ω | t ≤ |(F fun i => Xv i ω) - ∫ (ω' : Ω), F fun i => Xv i ω' ∂P|} ≤
                   ENNReal.ofReal (2 * rexp (-(2 * t ^ 2) / ∑ i, c i ^ 2)))
-
-example (X : Type*) [MeasurableSpace X] (ι : Type*) [Fintype ι] :
-    McdiarmidLean.McDiarmidLowerTail X ι = (∀ (μ : ι → Measure X) [∀ i, IsProbabilityMeasure (μ i)] (F : (ι → X) → ℝ) (c : ι → ℝ),
-    Measurable F → (∀ x y : ι → X, ∀ i, (∀ j, j ≠ i → x j = y j) → |F x - F y| ≤ c i) →
-    ∀ t : ℝ, 0 < t →
-      Measure.pi μ {x | F x ≤ (∫ y, F y ∂(Measure.pi μ)) - t}
-        ≤ ENNReal.ofReal (Real.exp (-(2 * t ^ 2) / ∑ i, c i ^ 2))) := rfl

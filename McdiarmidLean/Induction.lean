@@ -62,7 +62,7 @@ abbrev BoundedDiff {ι : Type*} (F : (ι → X) → ℝ) (c : ι → ℝ) : Prop
 /-! ## Boundedness and integrability -/
 
 omit [MeasurableSpace X] in
-/-- A function with bounded differences moves by at most `Σᵢ cᵢ` between any two points. -/
+/-- The values of a function with bounded differences differ by at most `Σᵢ cᵢ`. -/
 lemma abs_sub_le_sum {ι : Type*} [Fintype ι] {F : (ι → X) → ℝ} {c : ι → ℝ}
     (hF : BoundedDiff F c) (x₀ : ι → X) (x : ι → X) : |F x - F x₀| ≤ ∑ i, c i := by
   classical

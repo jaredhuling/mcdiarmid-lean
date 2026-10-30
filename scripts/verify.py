@@ -15,8 +15,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 ALLOWED_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
-MODULES = ["BoundedDifferences", "Induction", "JointLaw", "Statement", "Compat/Cooverlap",
-           "Examples"]
+MODULES = ["BoundedDifferences", "Induction", "JointLaw", "Statement", "Examples"]
 HEADER = """/-
 Copyright (c) 2026 Jared Huling. All rights reserved.
 Released under MIT license as described in the file LICENSE.
@@ -88,7 +87,6 @@ def check_composition(records):
         "mcdiarmid_two_sided_pi": ["mcdiarmid_upper_tail_pi", "mcdiarmid_lower_tail_pi"],
         "hasSubgaussianMGF_boundedDiff": ["hasSubgaussianMGF_boundedDiff_pi",
             "JointLaw.integral_vec", "JointLaw.map_vec_eq_pi"],
-        "mcDiarmidLowerTail_holds": ["mcdiarmid_lower_tail_pi"],
     }
     for side in ["upper_tail", "lower_tail", "two_sided"]:
         required["mcdiarmid_" + side] = ["JointLaw.integral_vec", "JointLaw.prob_vec",
@@ -112,7 +110,7 @@ def check_review(records, review):
         classified = {int(i) for i in entry["proposition_binders"]}
         if indices != classified:
             raise ValueError(f"Incomplete premise inventory: {record['declaration']}")
-        allowed = {"paper-assumes", "paper-derives", "paper-cites", "lean-proves-applied", "not-in-paper"}
+        allowed = {"reference-assumes", "reference-derives", "reference-cites", "lean-proves-applied", "formalization-specific"}
         if any(p.get("provenance") not in allowed or not p.get("evidence", "").strip()
                for p in entry["proposition_binders"].values()):
             raise ValueError(f"Unclassified premise or missing evidence: {record['declaration']}")
@@ -175,7 +173,7 @@ def main():
     if len(names) != len(set(names)):
         raise ValueError("Duplicate source declaration names")
     audit_commands = (ROOT / "verification/AuditCommands.lean.inc").read_text()
-    compiled = HEADER + "public import Lean\nimport McdiarmidLean\nimport McdiarmidLean.Examples\nimport McdiarmidLean.Compat.Cooverlap\n\n"
+    compiled = HEADER + "public import Lean\nimport McdiarmidLean\nimport McdiarmidLean.Examples\n\n"
     compiled += "/-! # Compiled declaration audit -/\n\n" + audit_commands
     compiled += "\n" + "\n".join("audit_decl " + n for n in names) + "\n"
     imported = parse_records(lean("compiled_audit", compiled), names)
@@ -242,8 +240,8 @@ run_cmd do
               "build_performed": not args.skip_build,
               "declarations": len(records), "seconds": round(time.monotonic() - start, 2),
               "axioms_allowed": sorted(ALLOWED_AXIOMS), "root_imports": "generic only",
-              "statement_regressions": "seven original types plus adapter definition",
-              "scope": "This library; no full-paper or upstream acceptance claim"}
+              "statement_regressions": "six original tail-inequality types",
+              "scope": "Standalone McDiarmid library and its examples"}
     result_path.write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps(result), flush=True)
 

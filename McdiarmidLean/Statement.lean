@@ -14,12 +14,12 @@ public import McdiarmidLean.JointLaw
 Reference: S. Boucheron, G. Lugosi and P. Massart (2013), *Concentration Inequalities: A
 Nonasymptotic Theory of Independence*, Oxford University Press, Theorem 6.2.
 
-Setting. `ι` is a finite index type and `X` is an arbitrary measurable space. The coordinate
+Let `ι` be a finite index type and `X` be a measurable space. The coordinate
 laws `μ i` are probability measures on `X` and may differ across `i`. The statistic
 `F : (ι → X) → ℝ` is measurable and has bounded differences with constants `c i`: whenever two
 points `x` and `y` agree off coordinate `i`, `|F x - F y| ≤ c i`.
 
-Conclusions, for every `t > 0`, with `S = Σᵢ cᵢ²`:
+For each `t > 0`, writing `S = Σᵢ cᵢ²`, the library proves the following bounds:
 
 * upper tail: `P{F ≥ E F + t} ≤ exp(-2t²/S)` (`mcdiarmid_upper_tail_pi`);
 * lower tail: `P{F ≤ E F - t} ≤ exp(-2t²/S)` (`mcdiarmid_lower_tail_pi`);
@@ -27,17 +27,18 @@ Conclusions, for every `t > 0`, with `S = Σᵢ cᵢ²`:
 * the same three bounds for independent random variables `Xv i : Ω → X` under a probability
   measure (`mcdiarmid_upper_tail`, `mcdiarmid_lower_tail`, `mcdiarmid_two_sided`).
 
-Degenerate cases. If `S = 0`, Lean's convention `x / 0 = 0` makes the bound `exp 0 = 1` (or
+If `S = 0`, Lean's convention `x / 0 = 0` makes the bound `exp 0 = 1` (or
 `2` in the two-sided case), and the statements remain true because probabilities are at most
 `1`. This covers an empty index type. If `ι` is nonempty, the hypotheses force `X` to be
-nonempty (a probability measure lives on a nonempty space), so no `Nonempty X` assumption
+nonempty because a probability measure has total mass one, so no `Nonempty X` assumption
 appears in the statements.
 
-Proof route. The two one-sided product-measure bounds come from `McdiarmidLean.Induction`,
-which proves them from mathlib alone by induction over coordinates: a moment
-generating function bound via Fubini and Hoeffding's lemma, packaged as `HasSubgaussianMGF`,
-then mathlib's Chernoff bound. A union bound gives the two-sided result; joint-law transport
-gives the independent-random-variable results.
+The module `McdiarmidLean.Induction` establishes the moment generating function bound by
+induction over coordinates using Fubini's theorem and Hoeffding's lemma from mathlib.
+The resulting `HasSubgaussianMGF` statement implies the upper-tail bound through mathlib's
+Chernoff inequality. Applying this bound to `-F` yields the lower-tail bound, and a union
+bound yields the two-sided result. Equality of the joint law and the product of the
+marginal laws establishes the corresponding results for independent random variables.
 -/
 
 public section

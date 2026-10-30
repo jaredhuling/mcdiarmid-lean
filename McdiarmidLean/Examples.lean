@@ -8,9 +8,10 @@ module
 public import McdiarmidLean.Statement
 
 /-!
-# Sanity instances
+# Examples of the bounded-differences inequality
 
-Small instances that check the public statements elaborate and apply as intended.
+These examples apply the library results to Bernoulli coordinates, strict tail events,
+zero coordinate bounds, and empty products.
 -/
 
 public section
@@ -55,7 +56,7 @@ theorem strict_upper {ι X : Type*} [Fintype ι] [MeasurableSpace X]
   change _ + t ≤ F x
   linarith
 
--- Zero coordinate bounds force a constant statistic, rather than an undefined expectation.
+-- Zero coordinate bounds imply that the statistic is constant and its centered tail is zero.
 theorem zero_diff_tail {ι X : Type*} [Fintype ι] [MeasurableSpace X]
     (μ : ι → Measure X) [∀ i, IsProbabilityMeasure (μ i)]
     (F : (ι → X) → ℝ) (hF : McdiarmidLean.BoundedDiff F (fun _ => 0))
@@ -129,7 +130,7 @@ theorem two_bernoulli_rv {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
     (fun x => bernoulliValue (x 0) + bernoulliValue (x 1)) (fun _ => 1)
     hm bernoulli_sum_boundedDiff t ht
 
-/-- The reusable MGF API handles a zero variance proxy directly. -/
+/-- The centered MGF bound applies with a zero variance proxy. -/
 example {ι X : Type*} [Fintype ι] [MeasurableSpace X]
     (μ : ι → Measure X) [∀ i, IsProbabilityMeasure (μ i)] (F : (ι → X) → ℝ)
     (hFm : Measurable F) (hF : McdiarmidLean.BoundedDiff F (fun _ => 0)) :

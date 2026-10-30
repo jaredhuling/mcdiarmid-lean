@@ -5,10 +5,6 @@ Authors: Jared Huling
 -/
 module
 
-import McdiarmidLean.Compat.Cooverlap
 import McdiarmidLean.Examples
 
-/-! # Explicit build target for examples and paper compatibility -/
-
-example : McdiarmidLean.McDiarmidLowerTail ℝ (Fin 3) :=
-  McdiarmidLean.mcDiarmidLowerTail_holds ℝ (Fin 3)
+/-! # Examples for McDiarmid's bounded-differences inequality -/
