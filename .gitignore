@@ -1,0 +1,17 @@
+# Lake builds, downloaded dependencies, and generated verification evidence
+.lake/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# macOS metadata
+.DS_Store
+._*
+
+# Editor temporary files
+*~
+*.swp
+*.swo
+
+# Keep lake-manifest.json, lean-toolchain, and verification/ tracked.

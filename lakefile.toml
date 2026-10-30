@@ -1,0 +1,27 @@
+name = "mcdiarmid"
+version = "0.1.0"
+keywords = ["math", "probability", "concentration"]
+defaultTargets = ["McdiarmidLean", "McdiarmidLeanTest"]
+testDriver = "McdiarmidLeanTest"
+
+[leanOptions]
+pp.unicode.fun = true
+relaxedAutoImplicit = false
+autoImplicit = false
+maxSynthPendingDepth = 3
+warningAsError = true
+weak.linter.mathlibStandardSet = true
+weak.linter.style.header.license = "Released under MIT license as described in the file LICENSE."
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.35.0"
+
+# Public library: the product-measure and random-variable forms of McDiarmid's inequality.
+[[lean_lib]]
+name = "McdiarmidLean"
+
+# Examples and compatibility checks are built without entering the public root import.
+[[lean_lib]]
+name = "McdiarmidLeanTest"

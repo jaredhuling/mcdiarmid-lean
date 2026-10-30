@@ -1,0 +1,604 @@
+{
+  "schema": 1,
+  "review_date": "2026-10-30",
+  "reviewer": "Codex source and mathematical review; not a human referee or upstream approval",
+  "reference": "Boucheron, Lugosi and Massart (2013), Theorem 6.2, printed page 171; proof comparison described in VERIFICATION.md",
+  "scope": "All 35 named source declarations, including 8 named example declarations; all 311 binders retained in the generated inventory, with 95 proposition binders classified here. Anonymous examples are covered by the full build.",
+  "definition_context_sha256": {
+    "lean-toolchain": "ca5f1f601d34c49079e38d7e7041eb0f2a9c227fbc1df0f404820069a052330c",
+    "lake-manifest.json": "2b1f91bcd6acb77f7d715f3c70ae2d89f072bd43e789484d76722e713510d195",
+    "verification/OriginalStatements.lean": "628a910057f33224e5a2824f8cdb8c64c80ad87b938118ed95f782f55a4321fb",
+    "McdiarmidLean/BoundedDifferences.lean": "d65be147ff4d0b15a06d4870a33617afd453c2c71f3f9714b15d1ad5c8a55f28",
+    "McdiarmidLean/Compat/Cooverlap.lean": "6ff59c9511b46c6f7d2aa329255f221054e659acb230aafaf4b4b38902cc2027",
+    "McdiarmidLean/Examples.lean": "4b8845c60bdd52bc5b784e17352728ffc29460249986e9aed5578b6bcce540b5",
+    "McdiarmidLean/Induction.lean": "21ac136aba977f6b47000091eef093513828dd8b04bf43ad0e2ca9cb306bee32",
+    "McdiarmidLean/Statement.lean": "69cf7a5ceb1460dd8a3158b75ff9e1d07e92f9da89baba8dd1c496f5fdd37536",
+    "McdiarmidLean/JointLaw.lean": "e0c9dd987741287fbb8a8e88986f17bcd14a66f939fb97470dc4daf191732c56",
+    "lakefile.toml": "344f8b346fd7380eadccbf8865e156fd69603f9dd6c65bdff2e1473a7e8850bb"
+  },
+  "declarations": {
+    "McdiarmidLean.BoundedDiff": {
+      "signature_sha256": "5ab033daee7d238e6ef3b6ea5cc43a03e52584c8f1be52753ea6a92977cac7d8",
+      "role": "library",
+      "proposition_binders": {}
+    },
+    "McdiarmidLean.Induction.BoundedDiff": {
+      "signature_sha256": "e830c155fcc17c44a2350e1d4c5864ddfd10f52a977122a01005e1d8dfa9da22",
+      "role": "library",
+      "proposition_binders": {}
+    },
+    "McdiarmidLean.Induction.abs_sub_le_sum": {
+      "signature_sha256": "ec939c5d43db615c36ebb5fa1f313d545fb284ace73e3421fcf4c62ed6ff01c9",
+      "role": "library",
+      "proposition_binders": {
+        "5": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        }
+      }
+    },
+    "McdiarmidLean.Induction.exists_abs_le": {
+      "signature_sha256": "eaa1aa4917d0e31ca78d436e9adaa6c49b621b6570d978d1a407faf403204622",
+      "role": "library",
+      "proposition_binders": {
+        "2": {
+          "provenance": "paper-assumes",
+          "evidence": "The theorem concerns a finite collection of coordinates. Finite is sufficient for this helper; Fintype is available at the consuming finite-sum theorems."
+        },
+        "3": {
+          "provenance": "lean-proves-applied",
+          "evidence": "Derived using nonempty_of_isProbabilityMeasure in integrable_of_boundedDiff, mgf_le_fin, and hasSubgaussianMGF_boundedDiff_pi before exists_abs_le is applied."
+        },
+        "6": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        }
+      }
+    },
+    "McdiarmidLean.Induction.integrable_of_abs_le": {
+      "signature_sha256": "894bed80b5a9567057c547fd3b49329186340da3f0378e9efd6f45af1cbfb9a4",
+      "role": "library",
+      "proposition_binders": {
+        "3": {
+          "provenance": "lean-proves-applied",
+          "evidence": "Probability measures and their finite products are finite by mathlib instances. mgf_le_fin and the sub-Gaussian constructor apply this helper to those measures."
+        },
+        "5": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "7": {
+          "provenance": "lean-proves-applied",
+          "evidence": "exists_abs_le derives a global bound from bounded differences. mgf_le_fin also derives the slice/global and partial-mean bounds hHC and hgC before applying these integrability helpers."
+        }
+      }
+    },
+    "McdiarmidLean.Induction.integrable_exp_mul_sub": {
+      "signature_sha256": "2d93bdd7da8976ec08e4857682c279182b139adc0ab54b933b674032f9a77e92",
+      "role": "library",
+      "proposition_binders": {
+        "3": {
+          "provenance": "lean-proves-applied",
+          "evidence": "Probability measures and their finite products are finite by mathlib instances. mgf_le_fin and the sub-Gaussian constructor apply this helper to those measures."
+        },
+        "5": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "7": {
+          "provenance": "lean-proves-applied",
+          "evidence": "exists_abs_le derives a global bound from bounded differences. mgf_le_fin also derives the slice/global and partial-mean bounds hHC and hgC before applying these integrability helpers."
+        }
+      }
+    },
+    "McdiarmidLean.Induction.integrable_of_boundedDiff": {
+      "signature_sha256": "5f9cb8aee616300f01afa0815e6187c35f8959a2723c5dc52b5d7db8e4efb85a",
+      "role": "library",
+      "proposition_binders": {
+        "3": {
+          "provenance": "paper-assumes",
+          "evidence": "The theorem concerns a finite collection of coordinates. Finite is sufficient for this helper; Fintype is available at the consuming finite-sum theorems."
+        },
+        "5": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "8": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "9": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        }
+      }
+    },
+    "McdiarmidLean.Induction.exists_mem_Icc_of_abs_sub_le": {
+      "signature_sha256": "4ad7d548ee7a4ddd65a0e2d57277ef0845d1e5031cfcb9d1397d7fb951948657",
+      "role": "library",
+      "proposition_binders": {
+        "1": {
+          "provenance": "lean-proves-applied",
+          "evidence": "mgf_le_fin derives Nonempty X from the first coordinate probability law before applying this interval lemma."
+        },
+        "4": {
+          "provenance": "lean-proves-applied",
+          "evidence": "mgf_le_fin proves hgd by integrating the first-coordinate bounded difference, then applies this lemma to obtain hIcc for Hoeffding's lemma."
+        }
+      }
+    },
+    "McdiarmidLean.Induction.mgf_le_fin": {
+      "signature_sha256": "535da29bdf0e10a436b32d094e4fceac2087b92b10e71570a6ff59b66df62d8f",
+      "role": "library",
+      "proposition_binders": {
+        "4": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "7": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "8": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        }
+      }
+    },
+    "McdiarmidLean.Induction.mgf_le": {
+      "signature_sha256": "fe75454cf3c60d62414ce43abe6a5d033d040fcecab857fbef5e3ed17fee6f28",
+      "role": "library",
+      "proposition_binders": {
+        "5": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "8": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "9": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        }
+      }
+    },
+    "McdiarmidLean.hasSubgaussianMGF_boundedDiff_pi": {
+      "signature_sha256": "042bd75b890e87ca08149dff5e89a257ecc115476f03539629f348a9b5cbc0dd",
+      "role": "library",
+      "proposition_binders": {
+        "5": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "8": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "9": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        }
+      }
+    },
+    "McdiarmidLean.Induction.bound_eq_one_of_sum_eq_zero": {
+      "signature_sha256": "23909542339ec131b301370388e8a918ea5b015abf786dc64b8c227029977b39",
+      "role": "library",
+      "proposition_binders": {
+        "3": {
+          "provenance": "not-in-paper",
+          "evidence": "An explicit degenerate-case helper: assumes S = 0 and evaluates Lean's division-by-zero convention. The tail proof no longer depends on this helper."
+        }
+      }
+    },
+    "McdiarmidLean.Induction.upper_tail_pi": {
+      "signature_sha256": "c012a587d729c678874f8e82dc57572e3e32722e02ac5fc5ef50ed6b488c78b5",
+      "role": "library",
+      "proposition_binders": {
+        "5": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "8": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "9": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        },
+        "11": {
+          "provenance": "paper-assumes",
+          "evidence": "Positive deviation t in BLM Theorem 6.2."
+        }
+      }
+    },
+    "McdiarmidLean.Induction.lower_tail_pi": {
+      "signature_sha256": "ec02b3e84ee9a080ec739ea10adf3fe77dccbf24790c5b222d4874f909227781",
+      "role": "library",
+      "proposition_binders": {
+        "5": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "8": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "9": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        },
+        "11": {
+          "provenance": "paper-assumes",
+          "evidence": "Positive deviation t in BLM Theorem 6.2."
+        }
+      }
+    },
+    "McdiarmidLean.JointLaw.measurable_vec": {
+      "signature_sha256": "571afde6228779d21f1fae73af71c2b5405f6982999a7b58ae5a3ee8800e7cbf",
+      "role": "library",
+      "proposition_binders": {
+        "6": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        }
+      }
+    },
+    "McdiarmidLean.JointLaw.map_vec_eq_pi": {
+      "signature_sha256": "3970a86b0f9a4e146a5929796cd3f66015abcde4b2f6006db0f502ee0ac5b4e2",
+      "role": "library",
+      "proposition_binders": {
+        "7": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "9": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "10": {
+          "provenance": "paper-assumes",
+          "evidence": "Independence in BLM Theorem 6.2. JointLaw.map_vec_eq_pi applies mathlib iIndepFun_iff_map_fun_eq_pi_map, rather than assuming the desired concentration conclusion."
+        }
+      }
+    },
+    "McdiarmidLean.JointLaw.integral_vec": {
+      "signature_sha256": "88a64eb5a2a9f55c7f46b4be45f645a5680e9ca464eaa835b4bf921e28450f2b",
+      "role": "library",
+      "proposition_binders": {
+        "7": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "9": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "10": {
+          "provenance": "paper-assumes",
+          "evidence": "Independence in BLM Theorem 6.2. JointLaw.map_vec_eq_pi applies mathlib iIndepFun_iff_map_fun_eq_pi_map, rather than assuming the desired concentration conclusion."
+        },
+        "12": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        }
+      }
+    },
+    "McdiarmidLean.JointLaw.prob_vec": {
+      "signature_sha256": "3259cadef655183b936897de434224670963406672bebc148200f5fbfe17c110",
+      "role": "library",
+      "proposition_binders": {
+        "7": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "9": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "10": {
+          "provenance": "paper-assumes",
+          "evidence": "Independence in BLM Theorem 6.2. JointLaw.map_vec_eq_pi applies mathlib iIndepFun_iff_map_fun_eq_pi_map, rather than assuming the desired concentration conclusion."
+        },
+        "12": {
+          "provenance": "lean-proves-applied",
+          "evidence": "The public random-variable tails prove measurability of the corresponding threshold or absolute-deviation set using hFm; Statement.lean passes this set proof to prob_vec."
+        }
+      }
+    },
+    "McdiarmidLean.mcdiarmid_upper_tail_pi": {
+      "signature_sha256": "cc946dac35b655127269f1d66bde35c3575559511e1c4f7be65f783e965d609e",
+      "role": "library",
+      "proposition_binders": {
+        "5": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "8": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "9": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        },
+        "11": {
+          "provenance": "paper-assumes",
+          "evidence": "Positive deviation t in BLM Theorem 6.2."
+        }
+      }
+    },
+    "McdiarmidLean.mcdiarmid_lower_tail_pi": {
+      "signature_sha256": "7a2a7c5be0793dbb52173c31465e0093e564e4baf5086e403ba8bc5caca0bd52",
+      "role": "library",
+      "proposition_binders": {
+        "5": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "8": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "9": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        },
+        "11": {
+          "provenance": "paper-assumes",
+          "evidence": "Positive deviation t in BLM Theorem 6.2."
+        }
+      }
+    },
+    "McdiarmidLean.mcdiarmid_two_sided_pi": {
+      "signature_sha256": "72ac37c008392f7df923f5bc56297b40227da753be2bd1e4091e912a0f289dc9",
+      "role": "library",
+      "proposition_binders": {
+        "5": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "8": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "9": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        },
+        "11": {
+          "provenance": "paper-assumes",
+          "evidence": "Positive deviation t in BLM Theorem 6.2."
+        }
+      }
+    },
+    "McdiarmidLean.hasSubgaussianMGF_boundedDiff": {
+      "signature_sha256": "8cf656887ab0b0cb5c689cd49464539ae6e367da91985207de74a3c26b53e787",
+      "role": "library",
+      "proposition_binders": {
+        "7": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "9": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "10": {
+          "provenance": "paper-assumes",
+          "evidence": "Independence in BLM Theorem 6.2. JointLaw.map_vec_eq_pi applies mathlib iIndepFun_iff_map_fun_eq_pi_map, rather than assuming the desired concentration conclusion."
+        },
+        "13": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "14": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        }
+      }
+    },
+    "McdiarmidLean.mcdiarmid_upper_tail": {
+      "signature_sha256": "ff8e5f948df92a41953e64ce574ac49bc4ad78b9475795a28fb3d2ed9ffde2c3",
+      "role": "library",
+      "proposition_binders": {
+        "7": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "9": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "10": {
+          "provenance": "paper-assumes",
+          "evidence": "Independence in BLM Theorem 6.2. JointLaw.map_vec_eq_pi applies mathlib iIndepFun_iff_map_fun_eq_pi_map, rather than assuming the desired concentration conclusion."
+        },
+        "13": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "14": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        },
+        "16": {
+          "provenance": "paper-assumes",
+          "evidence": "Positive deviation t in BLM Theorem 6.2."
+        }
+      }
+    },
+    "McdiarmidLean.mcdiarmid_lower_tail": {
+      "signature_sha256": "1837d2798973ee46583357eeb3853b97a0216bb46df597db926b27d1ceb63c07",
+      "role": "library",
+      "proposition_binders": {
+        "7": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "9": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "10": {
+          "provenance": "paper-assumes",
+          "evidence": "Independence in BLM Theorem 6.2. JointLaw.map_vec_eq_pi applies mathlib iIndepFun_iff_map_fun_eq_pi_map, rather than assuming the desired concentration conclusion."
+        },
+        "13": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "14": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        },
+        "16": {
+          "provenance": "paper-assumes",
+          "evidence": "Positive deviation t in BLM Theorem 6.2."
+        }
+      }
+    },
+    "McdiarmidLean.mcdiarmid_two_sided": {
+      "signature_sha256": "ac1dd37ca9a64ebde8b8d90fcbb3d54c2e8c8a2b3d2941539b365a6b9212a4a7",
+      "role": "library",
+      "proposition_binders": {
+        "7": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "9": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "10": {
+          "provenance": "paper-assumes",
+          "evidence": "Independence in BLM Theorem 6.2. JointLaw.map_vec_eq_pi applies mathlib iIndepFun_iff_map_fun_eq_pi_map, rather than assuming the desired concentration conclusion."
+        },
+        "13": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "14": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        },
+        "16": {
+          "provenance": "paper-assumes",
+          "evidence": "Positive deviation t in BLM Theorem 6.2."
+        }
+      }
+    },
+    "McdiarmidLean.McDiarmidLowerTail": {
+      "signature_sha256": "a1e7e1762acfed9ba5ae6f62027bd8d9f6e5fda67c4a506ddaab6f90696f9f4b",
+      "role": "library",
+      "proposition_binders": {}
+    },
+    "McdiarmidLean.mcDiarmidLowerTail_holds": {
+      "signature_sha256": "fb155ff9ea2f906a547df890c44a712ffa59a706731c58c0f28611a520eb0e8d",
+      "role": "library",
+      "proposition_binders": {}
+    },
+    "McdiarmidLean.Examples.strict_upper": {
+      "signature_sha256": "89466ab1be3ab5f39504d822c0d8edb311ed5a9903830d297aca3d75b9cd95bd",
+      "role": "regression-example",
+      "proposition_binders": {
+        "5": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "8": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "9": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM Theorem 6.2 coordinatewise oscillation bound. BoundedDiff is exactly this pointwise condition; its exposed definition and compatibility abbreviation are reviewed."
+        },
+        "11": {
+          "provenance": "paper-assumes",
+          "evidence": "Positive deviation t in BLM Theorem 6.2."
+        }
+      }
+    },
+    "McdiarmidLean.Examples.zero_diff_tail": {
+      "signature_sha256": "e5ab4181b03f561dc1f43be3aa7a247620a146887e2aa09afcc8f06b29ca0654",
+      "role": "regression-example",
+      "proposition_binders": {
+        "5": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "7": {
+          "provenance": "not-in-paper",
+          "evidence": "Boundary regression assumes all coordinate differences are zero. The example proves F is constant and its actual positive-threshold tail is zero; this is not an additional premise of the general API."
+        },
+        "9": {
+          "provenance": "paper-assumes",
+          "evidence": "Positive deviation t in BLM Theorem 6.2."
+        }
+      }
+    },
+    "McdiarmidLean.Examples.empty_index_tail": {
+      "signature_sha256": "a833b7036e68e684f288a312970aef6f9178ff4f123aec274919de49b2261b14",
+      "role": "regression-example",
+      "proposition_binders": {
+        "2": {
+          "provenance": "paper-assumes",
+          "evidence": "Positive deviation t in BLM Theorem 6.2."
+        }
+      }
+    },
+    "McdiarmidLean.Examples.bernoulliValue": {
+      "signature_sha256": "d7e5615ab217981754b768d40c7707e0f5d13be87bc6229b3cec0bfed4ffc4bc",
+      "role": "regression-example",
+      "proposition_binders": {}
+    },
+    "McdiarmidLean.Examples.bernoulliValue_bounded": {
+      "signature_sha256": "b4b0331d3f8d1166530696aefb2d938a3bbd14c87f9c36d5a5efa0fcf759ee49",
+      "role": "regression-example",
+      "proposition_binders": {}
+    },
+    "McdiarmidLean.Examples.bernoulli_sum_boundedDiff": {
+      "signature_sha256": "17b623e0407f98a4ae3f287d07d884dcca3d9d430cc24d092a2d235dbdcfc4d1",
+      "role": "regression-example",
+      "proposition_binders": {}
+    },
+    "McdiarmidLean.Examples.two_bernoulli": {
+      "signature_sha256": "e558e180b796ce8b09d89539df98c6466241c906d0c61300ec4d33c84b3827ea",
+      "role": "regression-example",
+      "proposition_binders": {
+        "1": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "3": {
+          "provenance": "paper-assumes",
+          "evidence": "Positive deviation t in BLM Theorem 6.2."
+        }
+      }
+    },
+    "McdiarmidLean.Examples.two_bernoulli_rv": {
+      "signature_sha256": "9837c84d587d05f377615c3a02138f7f010dfecfdb44d98cf93554b9f7630709",
+      "role": "regression-example",
+      "proposition_binders": {
+        "3": {
+          "provenance": "paper-assumes",
+          "evidence": "BLM (2013), Theorem 6.2: independent random variables have probability laws. Product formulation uses their possibly different marginal laws."
+        },
+        "5": {
+          "provenance": "not-in-paper",
+          "evidence": "Explicit measurable-function hypothesis; implicit in the textbook probability/expectation statement. No continuity, topology, density, or standard-Borel assumption is imposed."
+        },
+        "6": {
+          "provenance": "paper-assumes",
+          "evidence": "Independence in BLM Theorem 6.2. JointLaw.map_vec_eq_pi applies mathlib iIndepFun_iff_map_fun_eq_pi_map, rather than assuming the desired concentration conclusion."
+        },
+        "8": {
+          "provenance": "paper-assumes",
+          "evidence": "Positive deviation t in BLM Theorem 6.2."
+        }
+      }
+    }
+  }
+}
